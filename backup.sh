@@ -48,12 +48,13 @@ echo ===================== part 1, create a new blank img ======================
 # New img file
 #sudo rm $img
 bootsz=`df -P | grep /boot | awk '{print $2}'`
-echo_log "boot section size: " $bootsz "Byte(s)"
+echo_log "boot section size: " $bootsz "KByte(s)"
 rootsz=`df -P | grep /dev/root | awk '{print $3}'`
-echo_log "root section size: " $rootsz "Byte(s)"
+echo_log "root section size: " $rootsz "KByte(s)"
 totalsz=`echo $bootsz $rootsz | awk '{print int(($1+$2)*1.3)}'`
-echo_log "total size: " $totalsz "Byte(s)"
-sudo dd if=/dev/zero of=$img bs=1k count=$totalsz
+echo_log "total size: " $totalsz "KByte(s)"
+totalcnt=`echo $totalsz | awk '{print int($1/4096)}'`
+sudo dd if=/dev/zero of=$img bs=4m count=$totalcnt
 echo_log "Create image file at" $img
 
 # format virtual disk
